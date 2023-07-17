@@ -1,7 +1,22 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method);
+  console.log('Path:  ', request.path);
+  console.log('Body:  ', request.body);
+  console.log('---');
+  next();
+}
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+}
+
+app.use(morgan('tiny'));
 app.use(express.json());
+app.use(requestLogger);
 
 let persons = [
   {
@@ -42,21 +57,22 @@ const generateId = () => {
 };
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body
+  const body = request.body;
 
-  if (!body.content) {
-    return response.status(400).json({ error: 'content missing' });
-  }
+  if (!body.name || !body.number) return response.status(400).json({ error: 'name or number missing' });
+
+  const nameExists = persons.some((person) => person.name === body.name);
+  if (nameExists) return response.status(409).json({ error: 'name must be unique' });
 
   const person = {
-    content: body.content,
-    important: body.important || false,
+    name: body.name,
+    number: body.number,
     id: generateId(),
-  }
+  };
 
-  persons = persons.concat(person)
+  persons = persons.concat(person);
 
-  response.json(person)
+  response.json(person);
 });
 
 app.get('/api/persons/:id', (request, response) => {
