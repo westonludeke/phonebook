@@ -1,2 +1,2 @@
-# phonebook
-A phonebook app in Express and Node
+# Phonebook App
+A phonebook app build using Express and Node
