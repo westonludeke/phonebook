@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const app = express();
 const cors = require('cors');
@@ -7,17 +6,7 @@ const cors = require('cors');
 // Define a custom morgan token to log the request body for POST requests
 morgan.token('req-body', (req) => JSON.stringify(req.body));
 
-const url = process.env.MONGO_DB_URL;
-
-mongoose.set('strictQuery',false);
-mongoose.connect(url);
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-});
-
-const Person = mongoose.model('Person', personSchema);
+const Person = require('./models/person');
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method);
