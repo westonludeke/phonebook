@@ -99,29 +99,28 @@ app.post('/api/persons', (request, response) => {
 });
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find(person => person.id === id);
-
-  if (person) response.json(person);
-  else response.status(404).end();
+  Person.findById(request.params.id).then(person => {
+    response.json(person);
+  });
 });
 
 app.delete('/api/persons/:id', (request, response) => {
-  Person.findById(request.params.id).then(person => {
-    response.json(person);
-  })
+  const id = Number(request.params.id);
+  persons = persons.filter(person => person.id !== id);
+
+  response.status(204).end();
 });
 
-app.get('/info', (request, response) => {
-  const numberOfPeople = persons.length;
-  const currentDate = new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' });
+// app.get('/info', (request, response) => {
+//   const numberOfPeople = persons.length;
+//   const currentDate = new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' });
 
-  const infoMessage = `Phonebook has info for ${numberOfPeople} people.`;
-  const timestampMessage = `Timestamp: ${currentDate}`;
+//   const infoMessage = `Phonebook has info for ${numberOfPeople} people.`;
+//   const timestampMessage = `Timestamp: ${currentDate}`;
 
-  const fullMessage = `${infoMessage} ${timestampMessage}`;
-  response.send(fullMessage);
-});
+//   const fullMessage = `${infoMessage} ${timestampMessage}`;
+//   response.send(fullMessage);
+// });
 
 app.use(unknownEndpoint);
 
