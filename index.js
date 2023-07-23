@@ -102,14 +102,11 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.get('/info', (request, response) => {
   const numberOfPeople = persons.length;
-
-  // Get the current date and time in Central Standard Time (CST)
   const currentDate = new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' });
 
   const infoMessage = `Phonebook has info for ${numberOfPeople} people.`;
   const timestampMessage = `Timestamp: ${currentDate}`;
 
-  // Concatenate both messages and send as the response
   const fullMessage = `${infoMessage} ${timestampMessage}`;
   response.send(fullMessage);
 });
