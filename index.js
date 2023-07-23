@@ -56,9 +56,14 @@ let persons = [
 // });
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons);
-  })
+  Person.find({})
+    .then(persons => {
+      response.json(persons);
+    })
+    .catch(error => {
+      console.error('Error fetching persons:', error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    });
 });
 
 // const generateId = () => {
