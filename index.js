@@ -76,10 +76,10 @@ app.post('/api/persons', (request, response) => {
   const nameExists = persons.some((person) => person.name === body.name);
   if (nameExists) return response.status(409).json({ error: 'name must be unique' });
 
-  const person = new Person {
+  const person = new Person({
     name: body.name,
     number: body.number
-  };
+  })
 
   person.save().then(savedPerson => {
     response.json(person);
@@ -116,7 +116,7 @@ app.get('/info', (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
