@@ -61,8 +61,15 @@ app.get('/api/persons', (request, response) => {
       response.json(persons);
     })
     .catch(error => {
-      console.error('Error fetching persons:', error);
-      response.status(500).json({ error: 'Internal Server Error' });
+      if (error.name === 'MongooseError' && error.message.includes('buffering timed out')) {
+        // Handle timeout error
+        console.error('Timeout error fetching persons:', error);
+        response.status(504).json({ error: 'Timeout Error' });
+      } else {
+        // Handle other errors
+        console.error('Error fetching persons:', error);
+        response.status(500).json({ error: 'Internal Server Error' });
+      }
     });
 });
 
