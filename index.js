@@ -76,15 +76,14 @@ app.post('/api/persons', (request, response) => {
   const nameExists = persons.some((person) => person.name === body.name);
   if (nameExists) return response.status(409).json({ error: 'name must be unique' });
 
-  const person = {
+  const person = new Person {
     name: body.name,
-    number: body.number,
-    // id: generateId(),
+    number: body.number
   };
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then(savedPerson => {
+    response.json(person);
+  })
 });
 
 app.get('/api/persons/:id', (request, response) => {
@@ -96,10 +95,9 @@ app.get('/api/persons/:id', (request, response) => {
 });
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter(person => person.id !== id);
-
-  response.status(204).end();
+  Person.findById(request.params.id).then(person => {
+    response.json(person);
+  })
 });
 
 app.get('/info', (request, response) => {
