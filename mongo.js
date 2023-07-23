@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 if (process.argv.length<3) {
@@ -24,10 +25,10 @@ const person = new Person({
   number: '444-555-5555',
 });
 
-person.save().then(result => {
-  console.log(`added ${person.name} with number ${person.number} to phonebook`);
-  mongoose.connection.close();
-});
+// person.save().then(result => {
+//   console.log(`added ${person.name} with number ${person.number} to phonebook`);
+//   mongoose.connection.close();
+// });
 
 Person.find({}).then(result => {
   console.log('phonebook:');
