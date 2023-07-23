@@ -1,8 +1,8 @@
-require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const cors = require('cors');
+require('dotenv').config();
 
 // Define a custom morgan token to log the request body for POST requests
 morgan.token('req-body', (req) => JSON.stringify(req.body));
@@ -51,9 +51,9 @@ let persons = [
   }
 ]
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>');
-});
+// app.get('/', (request, response) => {
+//   response.send('<h1>Hello World!</h1>');
+// });
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -61,12 +61,12 @@ app.get('/api/persons', (request, response) => {
   })
 });
 
-const generateId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(n => n.id))
-    : 0
-  return maxId + 1
-};
+// const generateId = () => {
+//   const maxId = persons.length > 0
+//     ? Math.max(...persons.map(n => n.id))
+//     : 0
+//   return maxId + 1
+// };
 
 app.post('/api/persons', (request, response) => {
   const body = request.body;
@@ -79,7 +79,7 @@ app.post('/api/persons', (request, response) => {
   const person = {
     name: body.name,
     number: body.number,
-    id: generateId(),
+    // id: generateId(),
   };
 
   persons = persons.concat(person);
@@ -118,7 +118,7 @@ app.get('/info', (request, response) => {
 
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
