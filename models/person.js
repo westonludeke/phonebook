@@ -22,8 +22,8 @@ const personSchema = new mongoose.Schema({
   },
   number: { 
     type: String,
-    minLength: 3,
-    required: true 
+    minLength: [3, 'The number must be at least 3 characters long'],
+    required: [true, 'The number field is required'] 
   },
 });
 
