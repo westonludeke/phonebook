@@ -13,6 +13,10 @@ const requestLogger = (request, response, next) => {
   next();
 }
 
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+}
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
@@ -25,18 +29,10 @@ const errorHandler = (error, request, response, next) => {
   next(error);
 }
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' });
-}
-
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 app.use(express.static('build'));
-
-
-let persons = [
-]
 
 app.get('/api/persons', (request, response) => {
   Person.find({})
@@ -98,7 +94,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(
     request.params.id, 
-    { name, number},
+    { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
    .then(updatedPerson => {
