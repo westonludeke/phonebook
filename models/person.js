@@ -23,7 +23,15 @@ const personSchema = new mongoose.Schema({
   number: { 
     type: String,
     minLength: [3, 'The number must be at least 3 characters long'],
-    required: [true, 'The number field is required'] 
+    required: [true, 'The number field is required'],
+    validate: {
+      validator: function (value) {
+        // Regular expression to match the 555-555-5555 format
+        const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+        return phoneRegex.test(value);
+      },
+      message: 'Invalid phone number format. Must be in the xxx-xxx-xxxx format.',
+    },
   },
 });
 
