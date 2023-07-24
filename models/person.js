@@ -7,7 +7,7 @@ const url = process.env.MONGO_DB_URL;
 console.log('connecting to', url);
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB');
   })
   .catch((error) => {
@@ -15,12 +15,12 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({
-  name: { 
+  name: {
     type: String,
     minLength: [3, 'The name must be at least 3 characters long'],
-    required: [true, 'The name field is required'] 
+    required: [true, 'The name field is required']
   },
-  number: { 
+  number: {
     type: String,
     required: [true, 'The number field is required'],
     validate: {
